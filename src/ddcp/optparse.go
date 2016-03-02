@@ -21,7 +21,7 @@ func ParseFlag() (params *DdcpParams) {
 
 	flag.StringVar(&params.source, "s", "", "source")
 	flag.StringVar(&params.dest, "d", "", "dest")
-	flag.BoolVar(&params.preserve, "p", false, "preserve")
+	flag.BoolVar(&params.preserve, "p", false, "preserve attributes")
 	flag.Int64Var(&params.chunk_size, "n", DEFAULT_CHUNK_SIZE, "chunk size")
 	flag.Parse()
 
