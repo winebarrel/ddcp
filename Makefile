@@ -11,7 +11,7 @@ install: ddcp
 	install -m 755 ddcp $(DESTDIR)$(PREFIX)/bin/
 
 clean:
-	rm -f ddcp *.tar.gz
+	rm -f ddcp *.gz
 
 package: clean ddcp
 	gzip -c ddcp > ddcp-$(VERSION)-${GOOS}-$(GOARCH).gz
