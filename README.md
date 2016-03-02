@@ -5,7 +5,7 @@ Parallel copy tool using [dd](https://en.wikipedia.org/wiki/Dd_%28Unix%29).
 ## Usage
 
 ```
-Usage of ./ddcp:
+Usage of ddcp:
   -d string
       dest
   -n int
