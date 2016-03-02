@@ -14,4 +14,4 @@ clean:
 	rm -f ddcp *.tar.gz
 
 package: clean ddcp
-	tar zcf ddcp-$(VERSION)-${GOOS}-$(GOARCH).tar.gz ddcp
+	gzip -c ddcp > ddcp-$(VERSION)-${GOOS}-$(GOARCH).gz
