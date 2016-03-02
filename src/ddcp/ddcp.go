@@ -25,20 +25,20 @@ func ddOpes(source string, dest string, bs string, count string) map[string]stri
 	return map[string]string{
 		"if":    source,
 		"of":    dest,
-		"conv":  "sparse,notrunc",
+		"conv":  "notrunc",
 		"bs":    bs,
 		"count": count}
 }
 
 func ddCmds(source string, dest string, chunk_size int64, chunk_num int64) (cmds []string) {
 	cmds = make([]string, chunk_num)
-	chunk_size_kb := chunk_size / 1024
+	chunk_size_mb := chunk_size / (1024 * 1024)
 
 	for i := int64(0); i < chunk_num; i++ {
-		opes := ddOpes(source, dest, "1k", strconv.FormatInt(chunk_size_kb, 10))
+		opes := ddOpes(source, dest, "1m", strconv.FormatInt(chunk_size_mb, 10))
 
 		if i > 0 {
-			offset := strconv.FormatInt(chunk_size_kb*i, 10)
+			offset := strconv.FormatInt(chunk_size_mb*i, 10)
 			opes["skip"] = offset
 			opes["seek"] = offset
 		}
@@ -60,8 +60,6 @@ func runCmd(cmd string, ch chan error) {
 }
 
 func runCmds(cmds []string) (err error) {
-	fmt.Println(cmds)
-
 	ch := make(chan error)
 
 	for _, cmd := range cmds {
@@ -104,7 +102,7 @@ func Ddcp(params *DdcpParams) error {
 	cmds := ddCmds(params.source, params.dest, params.chunk_size, chunk_num)
 
 	if remainder > 0 {
-		opes := ddOpes(params.source, params.dest, "1", strconv.FormatInt(params.chunk_size, 10))
+		opes := ddOpes(params.source, params.dest, strconv.FormatInt(remainder, 10), "1")
 		offset := strconv.FormatInt(params.chunk_size*chunk_num, 10)
 		opes["skip"] = offset
 		opes["seek"] = offset

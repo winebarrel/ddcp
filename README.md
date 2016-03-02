@@ -9,8 +9,7 @@ Usage of ddcp:
   -d string
       dest
   -n int
-      chunk size (default 104857600)
-  -p  preserve
+      chunk size [mb] (default 100)
   -s string
       source
 ```
