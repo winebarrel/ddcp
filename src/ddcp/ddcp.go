@@ -5,6 +5,7 @@ import (
 	"os"
 	"os/exec"
 	"strconv"
+	"syscall"
 )
 
 func ddOpes(opes map[string]string) (cmd_opes []string) {
@@ -76,29 +77,53 @@ func runCmds(opes_list [][]string) (err error) {
 	return
 }
 
-func Ddcp(params *DdcpParams) error {
+func Ddcp(params *DdcpParams) (err error) {
 	src, src_err := os.Stat(params.source)
 
 	if src_err != nil {
-		return fmt.Errorf("source file does not exist: %s", params.source)
+		err = fmt.Errorf("source file does not exist: %s", params.source)
+		return
 	}
 
 	src_size := src.Size()
 
 	if src_size == 0 {
-		return fmt.Errorf("source file is empty: %s", params.source)
+		err = fmt.Errorf("source file is empty: %s", params.source)
+		return
 	}
 
 	_, dst_err := os.Stat(params.dest)
 
 	if dst_err == nil {
-		return fmt.Errorf("dest file already exists: %s", params.dest)
+		err = fmt.Errorf("dest file already exists: %s", params.dest)
+		return
 	}
 
 	remainder := src_size % params.chunk_size
 	chunk_num := src_size / params.chunk_size
 
 	opes_list := ddOpesList(params.source, params.dest, params.chunk_size, chunk_num, remainder)
+	run_err := runCmds(opes_list)
 
-	return runCmds(opes_list)
+	if run_err != nil {
+		return run_err
+	}
+
+	if params.preserve {
+		err = os.Chmod(params.dest, src.Mode())
+
+		if err != nil {
+			return
+		}
+
+		uid := src.Sys().(*syscall.Stat_t).Uid
+		gid := src.Sys().(*syscall.Stat_t).Gid
+		err = os.Chown(params.dest, int(uid), int(gid))
+
+		if err != nil {
+			return
+		}
+	}
+
+	return
 }
