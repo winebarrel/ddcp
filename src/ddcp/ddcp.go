@@ -31,7 +31,7 @@ func ddOpesList(source string, dest string, chunk_size int64, chunk_num int64, r
 			"if":   source,
 			"of":   dest,
 			"conv": "notrunc",
-			"bs":   "1m"}
+			"bs":   "1047552"}
 
 		if i < chunk_num-1 {
 			opes["count"] = strconv.FormatInt(chunk_size_mb, 10)
