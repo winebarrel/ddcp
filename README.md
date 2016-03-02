@@ -1,6 +1,6 @@
 # ddcp
 
-Parallel copy tool using [dd](https://en.wikipedia.org/wiki/Dd_%28Unix%29).
+Parallel file copy command using [dd](https://en.wikipedia.org/wiki/Dd_%28Unix%29).
 
 ## Usage
 
