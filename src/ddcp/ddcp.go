@@ -87,11 +87,6 @@ func Ddcp(params *DdcpParams) (err error) {
 
 	src_size := src.Size()
 
-	if src_size == 0 {
-		err = fmt.Errorf("source file is empty: %s", params.source)
-		return
-	}
-
 	_, dst_err := os.Stat(params.dest)
 
 	if dst_err == nil {
@@ -99,14 +94,23 @@ func Ddcp(params *DdcpParams) (err error) {
 		return
 	}
 
-	remainder := src_size % params.chunk_size
-	chunk_num := src_size / params.chunk_size
+	if src_size == 0 {
+		out, cp_err := exec.Command("cp", params.source, params.dest).CombinedOutput()
 
-	opes_list := ddOpesList(params.source, params.dest, params.chunk_size, chunk_num, remainder)
-	run_err := runCmds(opes_list)
+		if cp_err != nil {
+			err = fmt.Errorf("'cp %s %s' is failed: %s", params.source, params.dest, out)
+			return
+		}
+	} else {
+		remainder := src_size % params.chunk_size
+		chunk_num := src_size / params.chunk_size
 
-	if run_err != nil {
-		return run_err
+		opes_list := ddOpesList(params.source, params.dest, params.chunk_size, chunk_num, remainder)
+		run_err := runCmds(opes_list)
+
+		if run_err != nil {
+			return run_err
+		}
 	}
 
 	if params.preserve {
