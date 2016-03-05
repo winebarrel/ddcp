@@ -106,10 +106,10 @@ func Ddcp(params *DdcpParams) (err error) {
 		chunk_num := src_size / params.chunk_size
 
 		opes_list := ddOpesList(params.source, params.dest, params.chunk_size, chunk_num, remainder)
-		run_err := runCmds(opes_list)
+		err = runCmds(opes_list)
 
-		if run_err != nil {
-			return run_err
+		if err != nil {
+			return
 		}
 	}
 
