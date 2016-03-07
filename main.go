@@ -22,7 +22,7 @@ func main() {
 
 	if max_procs == "" {
 		cpus := runtime.NumCPU()
-		runtime.GOMAXPROCS(cpus * 10)
+		runtime.GOMAXPROCS(cpus)
 	}
 
 	params := ddcp.ParseFlag()
