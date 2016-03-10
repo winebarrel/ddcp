@@ -2,9 +2,6 @@ PREFIX=/usr/local
 VERSION=`git tag | tail -n 1`
 GOOS=`go env GOOS`
 GOARCH=`go env GOARCH`
-ARCHIVE=https://github.com/winebarrel/ddcp/archive/master.tar.gz
-#ARCHIVE=https://github.com/winebarrel/ddcp/archive/0.1.2.tar.gz
-TARBALL=ddcp_${VERSION}.orig.tar.gz
 
 ifdef GOPATH
   RUNTIME_GOPATH=$(GOPATH):`pwd`
