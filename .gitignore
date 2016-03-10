@@ -1,2 +1,6 @@
 /ddcp
 /*.gz
+/debian/ddcp.debhelper.log
+/debian/ddcp.substvars
+/debian/ddcp/
+/debian/files
