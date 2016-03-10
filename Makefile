@@ -1,8 +1,13 @@
 PREFIX=/usr/local
-RUNTIME_GOPATH=$(GOPATH):`pwd`
 VERSION=`git tag | tail -n 1`
 GOOS=`go env GOOS`
 GOARCH=`go env GOARCH`
+
+ifdef GOPATH
+  RUNTIME_GOPATH=$(GOPATH):`pwd`
+else
+  RUNTIME_GOPATH:`pwd`
+endif
 
 ddcp:	main.go src/ddcp/optparse.go src/ddcp/ddcp.go
 	GOPATH=$(RUNTIME_GOPATH) go build -o ddcp main.go
