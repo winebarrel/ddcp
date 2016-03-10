@@ -6,7 +6,7 @@ GOARCH=`go env GOARCH`
 ifdef GOPATH
   RUNTIME_GOPATH=$(GOPATH):`pwd`
 else
-  RUNTIME_GOPATH:`pwd`
+  RUNTIME_GOPATH=`pwd`
 endif
 
 ddcp:	main.go src/ddcp/optparse.go src/ddcp/ddcp.go
